@@ -22,7 +22,6 @@ public class Product {
     private String name;
 
     private String description;
-    @Column(nullable = false)
 
     @Column(nullable = false)
     private int stockQuantity;
