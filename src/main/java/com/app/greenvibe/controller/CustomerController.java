@@ -2,6 +2,7 @@ package com.app.greenvibe.controller;
 
 import com.app.greenvibe.dto.request.CustomerRegisterRequestDto;
 import com.app.greenvibe.dto.request.LoginRequestDto;
+import com.app.greenvibe.dto.response.AuthenticationResponse;
 import com.app.greenvibe.dto.response.CustomerResponseDto;
 import com.app.greenvibe.service.CustomerService;
 import lombok.RequiredArgsConstructor;
@@ -24,7 +25,7 @@ public class CustomerController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody LoginRequestDto request) {
+    public ResponseEntity<AuthenticationResponse> login(@RequestBody LoginRequestDto request) {
         return ResponseEntity.ok(customerService.login(request));
     }
 }
