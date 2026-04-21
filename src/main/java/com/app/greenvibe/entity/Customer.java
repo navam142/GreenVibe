@@ -47,6 +47,15 @@ public class Customer {
 
     private LocalDateTime updatedAt;
 
+    /**
+     * Automatically stamps updatedAt before every UPDATE query.
+     * Removed manual @Size on the entity — validation belongs in the DTO.
+     */
+    @PreUpdate
+    public void onUpdate() {
+        this.updatedAt = LocalDateTime.now();
+    }
+
     @OneToOne(mappedBy = "customer", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Cart cart;
 
