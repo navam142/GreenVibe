@@ -22,18 +22,18 @@ public class CategoryService {
         return categoryMapper.toDto(categoryRepository.save(category));
     }
 
-    public List<CategoryResponseDto> getAllCategory() {
+    public List<CategoryResponseDto> getAll() {
         return categoryRepository.findAll().stream()
                 .map(categoryMapper::toDto)
                 .toList();
     }
 
-    public Optional<CategoryResponseDto> getCategoryById(Long id) {
+    public Optional<CategoryResponseDto> getById(Long id) {
         return categoryRepository.findById(id)
                 .map(categoryMapper::toDto);
     }
 
-    public String deleteCategoryById(Long id) {
+    public String deleteById(Long id) {
         if (categoryRepository.existsById(id)) {
             categoryRepository.deleteById(id);
             return "Category with id " + id + " deleted successfully.";

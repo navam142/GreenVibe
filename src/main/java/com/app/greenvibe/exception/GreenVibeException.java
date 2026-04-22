@@ -17,4 +17,9 @@ public class GreenVibeException extends RuntimeException {
         super(message);
         this.status = status;
     }
+
+    public GreenVibeException(String message, HttpStatus status, Throwable cause) {
+        super(message, cause);
+        this.status = status;
+    }
 }

@@ -19,10 +19,10 @@ public class ProductRequestDto {
     @NotNull
     @Positive
     private BigDecimal price;
-    @NotNull
+    @NotNull @Positive
     private int stockQuantity;
 
-    private String imageUrl;
+    private String description;
 
     @NotNull
     private Long categoryId;
