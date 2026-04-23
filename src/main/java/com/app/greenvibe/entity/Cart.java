@@ -24,8 +24,10 @@ public class Cart {
     private Customer customer;
 
     @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Builder.Default
     private List<CartItem> cartItems = new ArrayList<>();
 
+    @Builder.Default
     private BigDecimal totalAmount = BigDecimal.ZERO;
 
     public void updateTotalAmount() {
