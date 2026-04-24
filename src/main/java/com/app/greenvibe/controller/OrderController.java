@@ -33,7 +33,5 @@ public class OrderController {
         return ResponseEntity.ok(orderService.updateOrderStatus(orderId, orderStatus));
     }
 
-
-
 }
 
