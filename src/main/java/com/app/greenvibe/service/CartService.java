@@ -27,10 +27,11 @@ public class CartService {
     private final CartMapper cartMapper;
     private final CartItemRepository cartItemRepository;
     private final ProductRepository productRepository;
+    private final ServiceUtility serviceUtility;
 
     @Transactional
     public CartResponseDto getOrCreateCart(Long customerId) {
-        Customer customer = getCustomerOrThrow(customerId);
+        Customer customer = serviceUtility.getCustomerOrThrow(customerId);
         Cart cart = cartRepository.findByCustomerId(customerId).orElseGet(() -> {
             Cart newCart = new Cart();
             newCart.setCustomer(customer);
@@ -39,13 +40,14 @@ public class CartService {
         return cartMapper.toDto(cart);
     }
 
+    @Transactional
     public CartResponseDto addItem(Long customerId, Long productId, int quantity) {
 
         if (quantity <= 0) {
             throw new IllegalArgumentException("Quantity must be greater than zero");
         }
 
-        Customer customer = getCustomerOrThrow(customerId);
+        Customer customer = serviceUtility.getCustomerOrThrow(customerId);
         Cart cart = cartRepository.findByCustomerId(customerId).orElseGet(() -> {
             Cart newCart = new Cart();
             newCart.setCustomer(customer);
@@ -75,24 +77,27 @@ public class CartService {
     }
 
     public CartResponseDto getCart(Long customerId) {
-        Cart cart = getCartByCustomerIdOrThrow(customerId);
+        Cart cart = serviceUtility.getCartByCustomerIdOrThrow(customerId);
         return cartMapper.toDto(cart);
     }
 
+    @Transactional
     public String removeItem(Long customerId, Long productId) {
 
-        Cart cart = getCartByCustomerIdOrThrow(customerId);
+        Cart cart = serviceUtility.getCartByCustomerIdOrThrow(customerId);
 
         CartItem cartItem = cartItemRepository.findByCartIdAndProductId(cart.getId(), productId)
                 .orElseThrow(() -> new ResourceNotFoundException("CartItem", "productId", productId));
 
         cart.getCartItems().remove(cartItem);
         cartItemRepository.delete(cartItem);
+        cart.updateTotalAmount();
         return "Item " + cartItem.getProduct().getName() + " removed from cart";
     }
 
+    @Transactional
     public CartResponseDto updateItem(Long customerId, Long productId, int quantity) {
-        Cart cart = getCartByCustomerIdOrThrow(customerId);
+        Cart cart = serviceUtility.getCartByCustomerIdOrThrow(customerId);
 
         CartItem cartItem = cartItemRepository.findByCartIdAndProductId(cart.getId(), productId)
                 .orElseThrow(() -> new ResourceNotFoundException("CartItem", "productId", productId));
@@ -112,18 +117,10 @@ public class CartService {
         return cartMapper.toDto(savedCart);
     }
 
-    private @NonNull Customer getCustomerOrThrow(Long customerId) {
-        return customerRepository.findById(customerId)
-                .orElseThrow(() -> new ResourceNotFoundException("Customer", "id", customerId));
-    }
 
-    private @NonNull Cart getCartByCustomerIdOrThrow(Long customerId) {
-        return cartRepository.findByCustomerId(customerId)
-                .orElseThrow(() -> new ResourceNotFoundException("Cart", "customerId", customerId));
-    }
 
     public String clearCart(Long customerId) {
-        Cart cart = getCartByCustomerIdOrThrow(customerId);
+        Cart cart = serviceUtility.getCartByCustomerIdOrThrow(customerId);
         cart.getCartItems().clear();
         cartItemRepository.deleteAll(cart.getCartItems());
         cart.setTotalAmount(BigDecimal.ZERO);

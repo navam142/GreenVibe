@@ -27,9 +27,19 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/auth/**").permitAll()
-                        .requestMatchers("/api/products/**").permitAll()
-                        .requestMatchers("/api/category/**").permitAll()
-                        .requestMatchers("/api/cart/**").permitAll()
+
+                        // ADMIN first, explicit
+                        .requestMatchers("/api/orders/admin/**").hasRole("ADMIN")
+                        .requestMatchers("/api/products/**", "/api/category/**").hasRole("ADMIN")
+
+                        // USER abilities
+                        .requestMatchers("/api/cart/**").hasRole("CUSTOMER")
+                        .requestMatchers(
+                                "/api/orders/place",
+                                "/api/orders/*",
+                                "/api/orders/*/cancel"
+                        ).hasRole("CUSTOMER")
+
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
