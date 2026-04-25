@@ -1,0 +1,149 @@
+.order-confirmation {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 2rem;
+  min-height: calc(100vh - 300px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.confirmation-card {
+  background: white;
+  padding: 3rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  width: 100%;
+}
+
+.success-icon {
+  width: 80px;
+  height: 80px;
+  background-color: #4caf50;
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 3rem;
+  margin: 0 auto 2rem;
+}
+
+.confirmation-card h1 {
+  color: #333;
+  margin-bottom: 1rem;
+}
+
+.order-id {
+  color: #666;
+  font-size: 1.1rem;
+  margin-bottom: 2rem;
+}
+
+.order-details {
+  background-color: #f9f9f9;
+  padding: 2rem;
+  border-radius: 8px;
+  margin-bottom: 2rem;
+  text-align: left;
+}
+
+.order-details h2 {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  color: #333;
+}
+
+.detail-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.75rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.detail-row:last-child {
+  border-bottom: none;
+}
+
+.status-badge {
+  background-color: #4caf50;
+  color: white;
+  padding: 0.25rem 0.75rem;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.total-amount {
+  font-size: 1.25rem;
+  font-weight: bold;
+  color: #4caf50;
+}
+
+.order-items-section {
+  background-color: #f9f9f9;
+  padding: 2rem;
+  border-radius: 8px;
+  margin-bottom: 2rem;
+  text-align: left;
+}
+
+.order-items-section h3 {
+  font-size: 1.25rem;
+  margin-bottom: 1rem;
+  color: #333;
+}
+
+.confirmation-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.confirmation-item:last-child {
+  border-bottom: none;
+}
+
+.confirmation-actions {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.home-button {
+  background-color: #4caf50;
+  color: white;
+  padding: 1rem 2rem;
+  border-radius: 8px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  transition: background-color 0.3s;
+}
+
+.home-button:hover {
+  background-color: #388e3c;
+}
+
+.no-order {
+  text-align: center;
+  padding: 4rem 2rem;
+}
+
+.no-order h2 {
+  color: #333;
+  margin-bottom: 2rem;
+}
+
+@media (max-width: 768px) {
+  .confirmation-card {
+    padding: 2rem;
+  }
+
+  .order-details,
+  .order-items-section {
+    padding: 1.5rem;
+  }
+}

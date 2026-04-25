@@ -2,6 +2,7 @@ package com.app.greenvibe.exception;
 
 import com.app.greenvibe.dto.response.ErrorResponseDto;
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -23,6 +24,7 @@ import java.util.List;
  *  3. Exception               — safety net for anything unexpected
  */
 @RestControllerAdvice
+@Slf4j
 public class GlobalExceptionHandler {
 
     /**
@@ -34,6 +36,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorResponseDto> handleGreenVibeException(
             GreenVibeException ex,
             HttpServletRequest request) {
+        log.warn("Business exception at path={} status={} message={}", request.getRequestURI(), ex.getStatus().value(), ex.getMessage());
 
         ErrorResponseDto response = ErrorResponseDto.builder()
                 .timestamp(LocalDateTime.now())
@@ -63,6 +66,8 @@ public class GlobalExceptionHandler {
                 .sorted()
                 .toList();
 
+        log.warn("Validation failed at path={} errors={}", request.getRequestURI(), validationErrors);
+
         ErrorResponseDto response = ErrorResponseDto.builder()
                 .timestamp(LocalDateTime.now())
                 .status(HttpStatus.BAD_REQUEST.value())
@@ -84,9 +89,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorResponseDto> handleUnexpectedException(
             Exception ex,
             HttpServletRequest request) {
-
-        // In production, you would log ex with a proper logger here:
-        // log.error("Unexpected error at {}: {}", request.getRequestURI(), ex.getMessage(), ex);
+        log.error("Unexpected error at path={}", request.getRequestURI(), ex);
 
         ErrorResponseDto response = ErrorResponseDto.builder()
                 .timestamp(LocalDateTime.now())
